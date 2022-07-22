@@ -1,5 +1,3 @@
-from cgitb import text
-from xmlrpc.client import boolean
 from flask import Blueprint,render_template, request, flash,redirect, url_for
 from .models import User
 from . import db
@@ -8,7 +6,6 @@ from flask_login import login_user, login_required, logout_user, current_user
 
 
 auth = Blueprint('auth', __name__)
-
 
 @auth.route('/login',methods= ['GET','POST'])
 def login():
@@ -29,11 +26,12 @@ def login():
 
     return render_template("login.html", user = current_user)
     
-
 @auth.route('/logout')
 @login_required
 def logout():
+    logout_user()
     return redirect(url_for('auth.login'))
+
 
 @auth.route('/sign-up',methods= ['GET','POST'])
 def sign_up():
@@ -46,7 +44,6 @@ def sign_up():
         user = User.query.filter_by(email = email).first()
         if user:
             flash('Email already exists with another account', category= 'error')
-            
         elif len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
         elif len(first_name) < 2:

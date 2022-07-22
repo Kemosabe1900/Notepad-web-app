@@ -14,7 +14,7 @@ def home():
         note  = request.form.get('note')
 
         if len(note) < 1:
-            flash('Your note is too short', category='error')
+            flash('You have to write a note before adding it!', category='error')
         else:
             new_note = Note(data = note, user_id = current_user.id)
             db.session.add(new_note)
